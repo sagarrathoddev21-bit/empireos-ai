@@ -1,7 +1,9 @@
 export async function POST(req) {
   try {
+    // Get message from frontend
     const { message } = await req.json();
 
+    // Call Groq API
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -13,11 +15,8 @@ export async function POST(req) {
         messages: [
           {
             role: "system",
-            content: "You are a helpful AI assistant."
-          },
-          {
-            role: "system",
-            content: You are EmpireOS AI — a strategic, high-performance mentor.
+            content: `
+You are EmpireOS AI — a strategic, high-performance mentor.
 
 Rules:
 - No motivation, only actionable advice
@@ -27,17 +26,27 @@ Rules:
 - Be direct, sharp, and practical
 
 Always help the user take action immediately.
+`
+          },
+          {
+            role: "user",
+            content: message
           }
         ]
       })
     });
 
+    // Convert response to JSON
     const data = await response.json();
+
+    // Return AI response
     return Response.json(data);
 
   } catch (error) {
+    console.error("API Error:", error);
+
     return Response.json(
-      { error: "Server error" },
+      { error: "Something went wrong" },
       { status: 500 }
     );
   }
