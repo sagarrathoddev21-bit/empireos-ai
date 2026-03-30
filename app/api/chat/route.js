@@ -11,8 +11,14 @@ export async function POST(req) {
       body: JSON.stringify({
         model: "llama3-70b-8192",
         messages: [
-          { role: "system", content: "You are a helpful AI." },
-          { role: "user", content: message }
+          {
+            role: "system",
+            content: "You are a helpful AI assistant."
+          },
+          {
+            role: "user",
+            content: message
+          }
         ]
       })
     });
@@ -21,6 +27,9 @@ export async function POST(req) {
     return Response.json(data);
 
   } catch (error) {
-    return Response.json({ error: "Server error" }, { status: 500 });
+    return Response.json(
+      { error: "Server error" },
+      { status: 500 }
+    );
   }
 }
